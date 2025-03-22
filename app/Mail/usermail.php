@@ -20,14 +20,14 @@ class usermail extends Mailable
     public $name;
     public $email;
     public $phone;
-    public $message;
+    public $usermessage;
 
     public function __construct($name, $email, $phone, $message)
     {
         $this->name = $name;
         $this->email = $email;
         $this->phone = $phone;
-        $this->message = $message;
+        $this->usermessage = $message;
     }
 
     /**

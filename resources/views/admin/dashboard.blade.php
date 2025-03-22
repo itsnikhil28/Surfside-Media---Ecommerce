@@ -189,6 +189,7 @@
                                         <th class="text-center">Tax</th>
                                         <th class="text-center">Total</th>
                                         <th class="text-center">Status</th>
+                                        <th class="text-center">Transaction Status</th>
                                         <th class="text-center">Order Date</th>
                                         <th class="text-center">Total Items</th>
                                         <th class="text-center">Delivered On</th>
@@ -207,6 +208,7 @@
                                         <td class="text-center">&#8377;{{$order->subtotal}}</td>
                                         <td class="text-center">&#8377;{{$order->tax}}</td>
                                         <td class="text-center">&#8377;{{$order->total}}</td>
+                                        <td class="text-center">{{$order->status}}</td>
                                         <td class="text-center">@if ($order->transaction)
                                             {{$order->transaction->status}}
                                             @endif</td>
