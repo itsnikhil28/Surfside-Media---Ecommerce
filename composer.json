@@ -14,6 +14,7 @@
         "livewire/livewire": "^3.0",
         "mongodb/laravel-mongodb": "^5.1",
         "mongodb/mongodb": "^1.20",
+        "stripe/stripe-php": "^16.6",
         "surfsidemedia/shoppingcart": "^1.0"
     },
     "require-dev": {

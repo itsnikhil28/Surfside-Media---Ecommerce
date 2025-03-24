@@ -257,7 +257,8 @@
                         </div>
                         <div class="checkout__payment-methods">
                             <div class="mb-3">
-                                <h5>Please select <b>PhonePe</b> or <b>Cash on delivery</b>. We are working on other payment methods</h5>
+                                <h5>We now support multiple payment options! Pay securely using <b>PhonePe</b>,
+                                    <b>UPI</b>, <b>Credit/Debit Cards</b>, or <b>Cash on Delivery</b>.</h5>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input form-check-input_fill" type="radio" name="mode"
@@ -280,17 +281,11 @@
                                     Cash on delivery
                                 </label>
                             </div>
-                            {{-- <div class="form-check">
-                                <input class="form-check-input form-check-input_fill" type="radio" name="mode"
-                                    id="mode4" value="paypal">
-                                <label class="form-check-label" for="mode4">
-                                    Paypal
-                                </label>
-                            </div> --}}
                             <div class="policy-text">
                                 Your personal data will be used to process your order, support your experience
                                 throughout this website, and for
-                                other purposes described in our <a href="/terms" target="_blank">privacy policy</a>.
+                                other purposes described in our <a href="/privacy-policy" target="_blank">privacy
+                                    policy</a>.
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary btn-checkout"

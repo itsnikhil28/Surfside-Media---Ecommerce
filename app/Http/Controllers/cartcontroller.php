@@ -10,6 +10,7 @@ use App\Models\product;
 use App\Models\sales;
 use App\Models\transaction;
 use App\Models\transaction_detail;
+use App\Models\User;
 use App\Models\wishlist;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -133,7 +134,6 @@ class cartcontroller extends Controller
         }
     }
 
-
     public function removecoupon()
     {
         session()->forget('coupon');
@@ -249,8 +249,76 @@ class cartcontroller extends Controller
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', 'Payment initiation failed. Please try again.');
             }
+        } else if ($request->mode == 'card') {
+            $user = User::find(session('id'));
+            if (!$user) {
+                return redirect()->back()->with('error', 'User not found!');
+            }
+
+            $cartItems = Cart::instance('cart')->content();
+
+            if ($cartItems->isEmpty()) {
+                return redirect()->back()->with('error', 'Your cart is empty!');
+            }
+
+            $order = order::create([
+                'is_shipping_different' => false
+            ]);
+
+            $line_items = [];
+            foreach ($cartItems as $item) {
+                $line_items[] = [
+                    'price_data' => [
+                        'currency' => 'INR',
+                        'product_data' => [
+                            'name' => $item->name,
+                        ],
+                        'unit_amount' => (int) $item->price * 100,
+                    ],
+                    'quantity' => (int) $item->qty,
+                ];
+            }
+
+            $vatAmount = (int) (Cart::instance('cart')->tax() * 100);
+            if ($vatAmount > 0) {
+                $line_items[] = [
+                    'price_data' => [
+                        'currency' => 'INR',
+                        'product_data' => [
+                            'name' => 'TAX',
+                        ],
+                        'unit_amount' => $vatAmount, // VAT amount
+                    ],
+                    'quantity' => 1,
+                ];
+            }
+
+            try {
+                $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
+
+                $success_url = route('stripe.success') . "?session_id={CHECKOUT_SESSION_ID}";
+
+                $response = $stripe->checkout->sessions->create([
+                    'success_url' => $success_url,
+                    'customer_email' => $user->email,
+                    'billing_address_collection' => 'required',
+                    'line_items' => $line_items,
+                    'metadata' => [
+                        'customer_name' => $user->name,
+                        'order_id' => $order->id,
+                    ],
+                    'mode' => 'payment',
+                    'payment_method_types' => ['card'],
+                ]);
+
+                Session::put('ids', ['orderid' => $order->id, 'request' => $request->all()]);
+
+                return redirect($response['url']);
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Payment failed: ' . $e->getMessage());
+            }
         } else {
-            return redirect()->back()->with('error', 'Please Select PhonePe or COD');
+            return redirect()->back()->with('error', 'Please Select Valid Payment Mode');
         }
 
         $this->destorycart();
@@ -326,6 +394,106 @@ class cartcontroller extends Controller
                 $this->destorycart();
 
                 return redirect()->route('cart.confirmation', ($order->id));
+            } else {
+                return redirect('/cart/checkout')->with('error', 'Payment initiation failed. Please try again.');
+            }
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred while fetching the transaction status.',
+                'details' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function stripesuccess(Request $request)
+    {
+        $formrequest = session('ids')['request'];
+        $order_id = session('ids')['orderid'];
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
+
+        try {
+            $response = $stripe->checkout->sessions->retrieve(
+                $request->session_id,
+                ['expand' => ['payment_intent']]
+            );
+
+            if ($response) {
+                $paymentIntentId = $response->payment_intent;
+
+                if ($paymentIntentId) {
+                    $paymentIntent = $stripe->paymentIntents->retrieve($paymentIntentId->id, ['expand' => ['charges.data.payment_method_details']]);
+                    $charges = $stripe->charges->all(['payment_intent' => $paymentIntentId->id]);
+                    $charge = $charges->data[0];
+
+                    $paymentMethod = $charge->payment_method_details->card ?? null;
+
+                    $cardDetails = [
+                        'brand' => $paymentMethod->brand ?? 'N/A',
+                        'last4' => $paymentMethod->last4 ?? 'XXXX',
+                        'exp_month' => $paymentMethod->exp_month ?? 'XX',
+                        'exp_year' => $paymentMethod->exp_year ?? 'XXXX',
+                    ];
+
+                    $transactionId = $paymentIntent->id;
+                    $amount = $paymentIntent->amount / 100;
+
+                    ///order started
+                    $order = order::findorfail($order_id);
+                    $order->user_id = session('id');
+                    $order->subtotal = (int) session('subtotal');
+                    $order->discount = (int) session('discount');
+                    $order->total = (int) session('total');
+                    $order->tax = (int) session('tax');
+                    $order->name = $formrequest['name'];
+                    $order->phone = $formrequest['phone'];
+                    $order->locality = $formrequest['locality'];
+                    $order->address = $formrequest['address'];
+                    $order->city = $formrequest['city'];
+                    $order->state = $formrequest['state'];
+                    $order->country = 'INDIA';
+                    $order->landmark = $formrequest['landmark'];
+                    $order->zip = $formrequest['zip'];
+                    $order->status = 'pending';
+                    $order->delivered_date = Carbon::now()->addDays(3);
+
+                    $order->save();
+
+                    foreach (Cart::instance('cart')->content() as $item) {
+                        orderitem::create([
+                            'product_id' => $item->id,
+                            'order_id' => $order->id,
+                            'price' => (int) $item->price,
+                            'quantity' => (int) $item->qty,
+                        ]);
+                    }
+
+                    $transaction = transaction::create([
+                        'status' => 'approved',
+                        'user_id' => session('id'),
+                        'order_id' => $order->id,
+                        'mode' => $formrequest['mode'],
+                    ]);
+
+                    transaction_detail::create([
+                        'transactionid' => $transaction->id,
+                        'merchantid' => "PGTESTPAYUAT86",
+                        'merchanttransactionid' => $order_id ?? null,
+                        'paymenttransactionid' => $transactionId,
+                        'amount' => $amount,
+                        'state' => "COMPLETED",
+                        'paymentdetails' => json_encode($cardDetails),
+                    ]);
+
+                    Session::forget('ids');
+
+                    $this->destorycart();
+
+                    return redirect()->route('cart.confirmation', ($order->id));
+                } else {
+                    return redirect('/cart/checkout')->with('error', 'Error while fetching payment details. Please try again.');
+                }
             } else {
                 return redirect('/cart/checkout')->with('error', 'Payment initiation failed. Please try again.');
             }

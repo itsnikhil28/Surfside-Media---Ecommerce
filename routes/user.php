@@ -41,5 +41,6 @@ Route::middleware([userauth::class])->group(function () {
 Route::middleware([cartquantity::class, userauth::class])->group(function () {
     Route::get('/cart/checkout', [cartcontroller::class, 'checkout']);
     Route::post('/cart/checkout/place-order', [cartcontroller::class, 'placeorder'])->name('cart.place-order');
+    Route::get('/stripe',[cartcontroller::class,'stripesuccess'])->name('stripe.success');
     Route::match(['get', 'post'], '/phonepe/callback', [cartcontroller::class, 'phonePeCallback'])->name('phonepe.callback');
 });
