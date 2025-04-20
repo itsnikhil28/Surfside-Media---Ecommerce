@@ -17,10 +17,12 @@ export default function Chatbot() {
     const chaticonref = useRef(null)
     const [language, setLanguage] = useState<string | null>(null)
     const [awaitingLanguage, setAwaitingLanguage] = useState(true)
+    const [responseerror, setResponseerror] = useState(false)
 
-    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, reload, error, append } = useChat({ api: '/api/gemini' })
+    const { messages, input, handleInputChange, handleSubmit, isLoading, stop, error, append } = useChat({ api: '/api/gemini' })
 
     const fetchLastGeminiResponse = async () => {
+        setResponseerror(false)
         try {
             const response = await axios.get('/api/gemini/last')
 
@@ -29,14 +31,17 @@ export default function Chatbot() {
                     role: 'assistant',
                     content: response.data.content
                 })
+                setResponseerror(false)
             }
         } catch (err) {
+            setResponseerror(true)
             console.error(err)
         }
     }
 
     const customHandleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        setResponseerror(false)
 
         if (input.trim() === '') return
 
@@ -224,14 +229,14 @@ export default function Chatbot() {
                                                     <span className="spinner-border spinner-border-sm text-primary" role="status" style={{ animationDelay: '0s' }}></span>
                                                 </div>
                                             )}
-                                            {/* {error && (
+                                            {responseerror && (
                                                 <div className="w-full align-items-center d-flex justify-content-center gap-3 mb-10">
                                                     <div><h5>An error occured</h5></div>
-                                                    <Button title="Retry" onClick={() => reload()} style={{
+                                                    <Button title="Retry" onClick={() => fetchLastGeminiResponse()} style={{
                                                         borderRadius: '0.75rem', color: 'white', textDecoration: 'underline'
                                                     }}>Retry..</Button>
                                                 </div>
-                                            )} */}
+                                            )}
                                             <div ref={scrollref}></div>
                                         </ScrollArea>
                                     </CardContent>

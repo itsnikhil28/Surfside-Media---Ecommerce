@@ -92,8 +92,7 @@ class GeminiController extends Controller
         }
 
         return response()->json([
-            'role' => 'assistant',
-            'content' => "Hi there! I am Surfside Media assistant. I can help you with various queries related to Surfside Media. How can I assist you today?"
-        ], 200);
+            'error' => 'No response found.'
+        ], 500);
     }
 }
