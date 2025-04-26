@@ -23,9 +23,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
-
+        
         if (env('APP_ENV') !== 'local') {
-            Artisan::call('storage:link');
+            if (!file_exists(public_path('storage'))) {
+                Artisan::call('storage:link');
+            }
             URL::forceScheme('https');
         }
     }
