@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates
 
 # Install MongoDB extension (specific version)
-RUN pecl install mongodb-1.15.0 && docker-php-ext-enable mongodb
+RUN pecl install mongodb-1.20.0 && docker-php-ext-enable mongodb
 
 # Install PHP extensions required for Laravel
 RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl
