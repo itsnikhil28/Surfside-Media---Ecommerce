@@ -62,7 +62,7 @@ class adminproductcontroller extends Controller
             'regular_price' => (int)$request->regular_price,
             'sale_price' => (int) $request->sale_price,
             'SKU' => $request->SKU,
-            'stock_status' => (int) $request->stock_status,
+            'stock_status' => $request->stock_status,
             'featured' => $request->featured,
             'quantity' => (int) $request->quantity,
             'image' => $imagename,
@@ -110,7 +110,7 @@ class adminproductcontroller extends Controller
         $product->regular_price = (int) $request->regular_price;
         $product->sale_price = (int) $request->sale_price;
         $product->SKU = $request->SKU;
-        $product->stock_status = (int) $request->stock_status;
+        $product->stock_status = $request->stock_status;
         $product->featured = $request->featured;
         $product->quantity = (int) $request->quantity;
         // $product->image = $request->image;
