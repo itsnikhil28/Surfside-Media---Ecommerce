@@ -17,8 +17,8 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     ca-certificates
 
-# Install the MongoDB PHP extension
-RUN pecl install mongodb && docker-php-ext-enable mongodb
+# Install MongoDB extension (specific version)
+RUN pecl install mongodb-1.15.0 && docker-php-ext-enable mongodb
 
 # Install PHP extensions required for Laravel
 RUN docker-php-ext-install pdo pdo_mysql zip exif pcntl
