@@ -33,7 +33,8 @@ class GeminiController extends Controller
             ]
         ];
 
-        $filePath = storage_path('app/surfside_training.txt');
+        $filePath = resource_path('data/surfside_training.txt');
+
         if (!file_exists($filePath)) {
             return response()->json(['error' => 'Training file not found.'], 500);
         }
