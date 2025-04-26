@@ -39,9 +39,9 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => env('MONGODB_URI'),
+            'dsn' => env('MONGODB_URI', 'mongodb://localhost:27017'),  // default to localhost if missing
             'port' => 27017,
-            'database' => env('MONGODB_DATABASE'),
+            'database' => env('MONGODB_DATABASE', 'default_database'),  // fallback to default database
         ],
 
         'sqlite' => [
