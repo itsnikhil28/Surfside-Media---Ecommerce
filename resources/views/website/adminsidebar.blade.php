@@ -130,6 +130,13 @@
                         <div class="text">Settings</div>
                     </a>
                 </li>
+
+                <li class="menu-item">
+                    <a href="/handleimage" class="{{request()->is('handleimage') ? 'active' : ''}}">
+                        <div class="icon"><i class="icon-settings"></i></div>
+                        <div class="text">Handle Image</div>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

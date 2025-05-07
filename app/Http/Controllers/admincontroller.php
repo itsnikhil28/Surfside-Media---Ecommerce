@@ -10,10 +10,9 @@ use App\Models\product;
 use App\Models\sales;
 use App\Models\slider;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-use function Livewire\store;
-use function PHPUnit\Framework\fileExists;
+use Illuminate\Support\Facades\Storage;
 
 class admincontroller extends Controller
 {
@@ -151,5 +150,23 @@ class admincontroller extends Controller
     {
         $user = User::findorfail(session('id'));
         return view('admin.settings', compact('user'));
+    }
+
+    public function handleimage()
+    {
+        return view('admin.handleimage');
+    }
+
+    public function handlestore(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|mimes:png,jpg,jpeg|max:2048'
+        ]);
+
+        $image = $request->file('image');
+        $imagename = time() . '.' . $image->getClientOriginalExtension();
+        $path = $image->storeAs('images', $imagename, ['disk' => 's3', 'visibility' => 'public']);
+
+        return redirect()->route('admin.handleimage')->with('uploadedImage', $path);
     }
 }

@@ -101,7 +101,7 @@ class homecontroller extends Controller
                 if ($user->role == 'user') {
                     return redirect('/dashboard');
                 }
-                return redirect('/');
+                return redirect('/admin-dashboard');
             } else {
                 return redirect('/login')->with('error', "Please Enter Correct Password");
             }
