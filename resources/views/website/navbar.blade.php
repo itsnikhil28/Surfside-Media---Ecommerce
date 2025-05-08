@@ -251,7 +251,8 @@
                 xmlns="http://www.w3.org/2000/svg">
                 <use href="#icon_cart" />
             </svg>
-            <span class="cart-amount d-block position-absolute js-cart-items-count">{{Cart::instance('cart')->content()->count()}}</span>
+            <span
+                class="cart-amount d-block position-absolute js-cart-items-count">{{Cart::instance('cart')->content()->count()}}</span>
         </a>
     </div>
 
@@ -300,13 +301,15 @@
         </div>
 
         <div class="border-top mt-auto pb-2">
-            <div class="customer-links container mt-4 mb-2 pb-1">
-                <svg class="d-inline-block align-middle" width="20" height="20" viewBox="0 0 20 20" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <use href="#icon_user" />
-                </svg>
-                <span class="d-inline-block ms-2 text-uppercase align-middle fw-medium">My Account</span>
-            </div>
+            <a href="{{ session('role')== 'admin' ? route('admin.dashboard') : route('users.dashboard') }}">
+                <div class="customer-links container mt-4 mb-2 pb-1">
+                    <svg class="d-inline-block align-middle" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_user" />
+                    </svg>
+                    <span class="d-inline-block ms-2 text-uppercase align-middle fw-medium">My Account</span>
+                </div>
+            </a>
 
             <ul class="container social-links list-unstyled d-flex flex-wrap mb-0">
                 <li>
@@ -386,7 +389,7 @@
             </nav>
 
             <div class="header-tools d-flex align-items-center">
-                <div class="header-tools__item hover-container">
+                {{-- <div class="header-tools__item hover-container">
                     <div class="js-hover__open position-relative">
                         <a class="js-search-popup search-field__actor" href="#">
                             <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -435,7 +438,7 @@
                             </div>
                         </form>
                     </div>
-                </div>
+                </div> --}}
                 @if (session('id'))
                 <div class="header-tools__item hover-container">
                     @if(session('role') == 'admin')

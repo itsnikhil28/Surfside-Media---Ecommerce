@@ -11,9 +11,9 @@
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide product-single__image-item">
                                     <img loading="lazy" class="h-auto"
-                                        src="{{asset('storage/products/'.$product->image)}}" width="674" height="674"
-                                        alt="" />
-                                    <a data-fancybox="gallery" href="{{asset('storage/products/'.$product->image)}}"
+                                        src="{{ Storage::disk('s3')->url('products/'.$product->image)}}" width="674" height="674"
+                                        alt="{{$product->name}}" />
+                                    <a data-fancybox="gallery" href="{{ Storage::disk('s3')->url('products/'.$product->image)}}"
                                         data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -24,9 +24,9 @@
                                 @if(!empty($product->images))
                                 @foreach (explode(',',$product->images) as $image)
                                 <div class="swiper-slide product-single__image-item">
-                                    <img loading="lazy" class="h-auto" src="{{asset('storage/products/'.$image)}}"
+                                    <img loading="lazy" class="h-auto" src="{{ Storage::disk('s3')->url('products/'.$image)}}"
                                         width="674" height="674" alt="" />
-                                    <a data-fancybox="gallery" href="{{asset('storage/products/'.$image)}}"
+                                    <a data-fancybox="gallery" href="{{ Storage::disk('s3')->url('products/'.$image)}}"
                                         data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
                                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -51,14 +51,17 @@
                     <div class="product-single__thumbnail">
                         <div class="swiper-container">
                             <div class="swiper-wrapper">
-                                <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
-                                        src="{{asset('storage/products/'.$product->image)}}" width="104" height="104"
-                                        alt="" />
+                                <div class="swiper-slide product-single__image-item">
+                                    <img loading="lazy" class="h-auto"
+                                        src="{{ Storage::disk('s3')->url('products/'.$product->image)}}" width="104" height="104"
+                                        alt="{{$product->name}}" />
                                 </div>
                                 @if (!empty($product->images))
                                 @foreach (explode(',',$product->images) as $image)
-                                <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto"
-                                        src="{{asset('storage/products/'.$image)}}" width="104" height="104" alt="" />
+                                <div class="swiper-slide product-single__image-item">
+                                    <img loading="lazy" class="h-auto"
+                                        src="{{ Storage::disk('s3')->url('products/'.$image)}}" width="104" height="104"
+                                        alt="{{$product->name}}" />
                                 </div>
                                 @endforeach
                                 @endif
@@ -237,10 +240,10 @@
                         href="#tab-additional-info" role="tab" aria-controls="tab-additional-info"
                         aria-selected="false">Additional Information</a>
                 </li>
-                <li class="nav-item" role="presentation">
+                {{-- <li class="nav-item" role="presentation">
                     <a class="nav-link nav-link_underscore" id="tab-reviews-tab" data-bs-toggle="tab"
                         href="#tab-reviews" role="tab" aria-controls="tab-reviews" aria-selected="false">Reviews (2)</a>
-                </li>
+                </li> --}}
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-description" role="tabpanel"
@@ -274,7 +277,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
+                {{-- <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
                     <h2 class="product-single__reviews-title">Reviews</h2>
                     <div class="product-single__reviews-list">
                         <div class="product-single__reviews-item">
@@ -403,7 +406,7 @@
                             </div>
                         </form>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>
@@ -450,11 +453,11 @@
                     <div class="swiper-slide product-card">
                         <div class="pc__img-wrapper">
                             <a href="{{route('product.detail',$relatedproduct->slug)}}">
-                                <img loading="lazy" src="{{asset('storage/products/'.$relatedproduct->image)}}"
+                                <img loading="lazy" src="{{ Storage::disk('s3')->url('products/'.$relatedproduct->image)}}"
                                     width="330" height="400" alt="{{$relatedproduct->name}}" class="pc__img">
                                 @if (!empty($relatedproduct->images))
                                 @foreach (explode(',',$relatedproduct->images) as $image)
-                                <img loading="lazy" src="{{asset('storage/products/'.$image)}}" width="330" height="400"
+                                <img loading="lazy" src="{{ Storage::disk('s3')->url('products/'.$image)}}" width="330" height="400"
                                     alt="{{$relatedproduct->name}}" class="pc__img pc__img-second">
                                 @endforeach
                                 @endif

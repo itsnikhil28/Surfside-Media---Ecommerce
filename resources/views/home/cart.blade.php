@@ -30,13 +30,15 @@
                         <em>Checkout Your Items List</em>
                     </span>
                 </a>
-                <a href="{{!(session('id')) ? '/login' : '/cart/order-confirmation'}}" class="checkout-steps__item">
-                    <span class="checkout-steps__item-number">03</span>
-                    <span class="checkout-steps__item-title">
-                        <span>Confirmation</span>
-                        <em>Review And Submit Your Order</em>
-                    </span>
-                </a>
+                {{-- <a href="{{!(session('id')) ? '/login' : '/cart/order-confirmation'}}"
+                    class="checkout-steps__item"> --}}
+                    <a href="javascript:void(0)" class="checkout-steps__item">
+                        <span class="checkout-steps__item-number">03</span>
+                        <span class="checkout-steps__item-title">
+                            <span>Confirmation</span>
+                            <em>Review And Submit Your Order</em>
+                        </span>
+                    </a>
         </div>
         @if ($cartitems->count() > 0)
         <div class="shopping-cart">
@@ -58,7 +60,8 @@
                             {{-- @dd($item->options['image']) --}}
                             <td>
                                 <div class="shopping-cart__product-item">
-                                    <img loading="lazy" src="{{asset('storage/products/'.$item->options['image'])}}"
+                                    <img loading="lazy"
+                                        src="{{Storage::disk('s3')->url('products/'.$item->options['image'])}}"
                                         width="120" height="120" alt="" />
                                 </div>
                             </td>
@@ -197,7 +200,8 @@
                                         <div class="form-check">
                                             <input class="form-check-input form-check-input_fill" type="checkbox"
                                                 value="" id="local_pickup">
-                                            <label class="form-check-label" for="local_pickup">Local pickup: &#8377;8</label>
+                                            <label class="form-check-label" for="local_pickup">Local pickup:
+                                                &#8377;8</label>
                                         </div>
                                         <div>Shipping to AL.</div>
                                         <div>

@@ -13,10 +13,6 @@ use App\Http\Middleware\adminauth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([adminauth::class])->group(function () {
-    Route::get('/handleimage', [admincontroller::class, 'handleimage'])->name('admin.handleimage');
-    Route::post('/handlestore', [admincontroller::class, 'handlestore'])->name('admin.handlestore');
-
-
     Route::get('/admin-dashboard', [admincontroller::class, 'index'])->name('admin.dashboard');
     Route::get('/chart-data', [admincontroller::class, 'getChartData']);
 

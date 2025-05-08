@@ -20,7 +20,7 @@
                         <td>{{$i}}</td>
                         <td class="pname">
                             <div class="image">
-                                <img src="{{asset('storage/brands/'.$brand->image)}}" alt="" class="image">
+                                <img src="{{ Storage::disk('s3')->url('brands/'.$brand->image) }}" alt="" class="image">
                             </div>
                             <div class="name">
                                 <a href="#" class="body-title-2">{{$brand->name}}</a>

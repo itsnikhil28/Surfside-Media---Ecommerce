@@ -64,8 +64,8 @@
                                 <td>{{$i}}</td>
                                 <td class="pname">
                                     <div class="image">
-                                        <img src="{{asset('storage/slider/'.$slider->image)}}" alt="{{$slider->title}}"
-                                            class="image">
+                                        <img src="{{ Storage::disk('s3')->url('slider/'.$slider->image) }}"
+                                            alt="{{$slider->title}}" class="image">
                                     </div>
                                 </td>
                                 <td>{{$slider->tagline}}</td>

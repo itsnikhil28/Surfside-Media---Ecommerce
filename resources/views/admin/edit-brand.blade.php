@@ -49,7 +49,7 @@
                         </div>
                         <div class="upload-image flex-grow">
                             <div class="item" id="imgpreview" style="display:block">
-                                <img src="{{asset('storage/brands/'.$brand->image)}}" class="effect8 img-responsive" alt="">
+                                <img src="{{ Storage::disk('s3')->url('brands/'.$brand->image) }}" class="effect8 img-responsive" alt="">
                             </div>
                             <div id="upload-file" class="item up-load">
                                 <label class="uploadfile" for="myFile">

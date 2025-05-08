@@ -19,13 +19,13 @@ class adminbrandcontroller extends Controller
     {
         $request->validate([
             'name' => 'required|unique:brands,name',
-            'image' => 'required|mimes:png,jpg,jpeg|max:2048'
+            'image' => 'required|mimes:png,jpg,jpeg,webp|max:2048'
         ]);
 
         if ($request->file('image')) {
             $image = $request->file('image');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $path = $image->storeAs('brands', $imagename, 'public');
+            $image->storeAs('brands', $imagename, ['disk' => 's3', 'visibility' => 'public']);
         } else {
             return back()->with('error', 'Image upload failed. Please try again.');
         }
@@ -38,7 +38,7 @@ class adminbrandcontroller extends Controller
             'image' => $imagename,
         ]);
 
-        return redirect()->back()->with('success', 'Brand created successfully.');
+        return redirect()->route('admin.brands')->with('success', 'Brand created successfully.');
     }
 
     public function editbrand($id)
@@ -54,7 +54,7 @@ class adminbrandcontroller extends Controller
         $request->validate([
             'name' => 'required|unique:brands,name,' . $brand->id,
             'slug' => 'required|unique:brands,slug,' . $brand->id,
-            'image' => 'nullable|mimes:png,jpg,jpeg|max:2048'
+            'image' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048'
         ]);
 
         $brand->name = $request->name;
@@ -62,12 +62,12 @@ class adminbrandcontroller extends Controller
 
         if ($request->hasFile('image')) {
             if ($brand->image) {
-                Storage::disk('public')->delete('brands/' . $brand->image);
+                Storage::disk('s3')->delete('brands/' . $brand->image);
             }
 
             $image = $request->file('image');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('brands', $imagename, 'public');
+            $image->storeAs('brands', $imagename, ['disk' => 's3', 'visibility' => 'public']);
 
             $brand->image = $imagename;
         }
@@ -79,9 +79,10 @@ class adminbrandcontroller extends Controller
     {
         $brand = brand::findorfail($id);
 
-        if ($brand->image && Storage::disk('public')->exists('brands/' . $brand->image)) {
-            Storage::disk('public')->delete('brands/' . $brand->image);
+        if ($brand->image && Storage::disk('s3')->exists('brands/' . $brand->image)) {
+            Storage::disk('s3')->delete('brands/' . $brand->image);
         }
+
         $brand->delete();
 
         return redirect()->route('admin.brands')->with('success', 'Brand Deleted successfully.');

@@ -4,14 +4,15 @@
             <div class="row row-cols-lg-5 row-cols-2">
                 <div class="footer-column footer-store-info col-12 mb-4 mb-lg-0">
                     <div class="logo">
-                        <a href="index.html">
+                        <a href="/">
                             <img src="{{asset('assets/images/logo.png')}}" alt="SurfsideMedia"
                                 class="logo__image d-block" />
                         </a>
+                        
                     </div>
-                    <p class="footer-address">123 Avenue, Dhampur City, 246761</p>
-                    <p class="m-0"><strong class="fw-medium">itsnikhil28@gmail.com</strong></p>
-                    <p><strong class="fw-medium">+91 945-664-2100</strong></p>
+                    <p class="footer-address">123 Avenue, City, 246761</p>
+                    <p class="m-0"><strong class="fw-medium">srajput11052005@gmail.com</strong></p>
+                    <p><strong class="fw-medium">+91 766-860-7543</strong></p>
 
                     <ul class="social-links list-unstyled d-flex flex-wrap mb-0">
                         <li>
@@ -142,7 +143,7 @@
 
         <div class="footer-bottom">
             <div class="container d-md-flex align-items-center">
-                <span class="footer-copyright me-auto">©2024 Surfside Media</span>
+                <span class="footer-copyright me-auto">©2025 Surfside Media</span>
                 <div class="footer-settings d-md-flex align-items-center">
                     <a href="/privacy-policy">Privacy Policy</a> &nbsp;|&nbsp; <a href="/terms-conditions">Terms
                         &amp;
@@ -155,7 +156,7 @@
 
     <footer class="footer-mobile container w-100 px-5 d-md-none bg-body">
         <div class="row text-center">
-            <div class="col-4">
+            <div class="col-3">
                 <a href="/" class="footer-mobile__link d-flex flex-column align-items-center">
                     <svg class="d-block" width="18" height="18" viewBox="0 0 18 18" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -165,7 +166,7 @@
                 </a>
             </div>
 
-            <div class="col-4">
+            <div class="col-3">
                 <a href="/shop" class="footer-mobile__link d-flex flex-column align-items-center">
                     <svg class="d-block" width="18" height="18" viewBox="0 0 18 18" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -175,7 +176,7 @@
                 </a>
             </div>
 
-            <div class="col-4">
+            <div class="col-3">
                 <a href="/wishlist" class="footer-mobile__link d-flex flex-column align-items-center">
                     <div class="position-relative">
                         <svg class="d-block" width="18" height="18" viewBox="0 0 20 20" fill="none"
@@ -186,6 +187,25 @@
                             class="wishlist-amount d-block position-absolute js-wishlist-count">{{Cart::instance('cart')->content()->count()}}</span>
                     </div>
                     <span>Wishlist</span>
+                </a>
+            </div>
+
+            {{-- @if(session('role') == 'admin')
+            <a href="{{ route('admin.dashboard') }}" class="header-tools__item">
+                @else
+                <a href="{{ route('users.dashboard') }}" class="header-tools__item">
+                    @endif
+                    <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_user" />
+                    </svg>
+                </a> --}}
+
+            <div class="col-3">
+                <a href="{{ session('role')== 'admin' ? route('admin.dashboard') : route('users.dashboard') }}" class="footer-mobile__link d-flex flex-column align-items-center">
+                    <svg class="d-block" width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <use href="#icon_user" />
+                    </svg>
+                    <span>Account</span>
                 </a>
             </div>
         </div>

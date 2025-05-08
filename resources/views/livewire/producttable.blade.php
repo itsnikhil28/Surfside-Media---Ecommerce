@@ -25,7 +25,7 @@
                     <td>{{$i}}</td>
                     <td class="pname">
                         <div class="image">
-                            <img src="{{asset('storage/products/'.$product->image)}}" alt="" class="image">
+                            <img src="{{ Storage::disk('s3')->url('products/'.$product->image) }}" alt="" class="image">
                         </div>
                         <div class="name">
                             <a href="#" class="body-title-2">{{$product->name}}</a>
@@ -42,7 +42,7 @@
                     <td>{{$product->quantity}}</td>
                     <td>
                         <div class="list-icon-function">
-                            <a  target="_blank">
+                            <a href={{route('product.detail',$product->slug)}} target="_blank">
                                 <div class="item eye">
                                     <i class="icon-eye"></i>
                                 </div>

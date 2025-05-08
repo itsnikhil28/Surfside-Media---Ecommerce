@@ -26,7 +26,7 @@ class admincontroller extends Controller
         $deliveredOrderAmount = order::where('status', 'delivered')->sum('total');
         $canceledOrders = order::where('canceled_date', 1)->count();
         $canceledOrderAmount = order::where('canceled_date', 1)->sum('total');
-        $recentorders = order::orderby('created_at', 'DESC')->limit(8)->get();
+        $recentorders = order::where('total' ,'>', 0)->orderby('created_at', 'DESC')->limit(5)->get();
         return view('admin.dashboard', compact(
             'recentorders',
             'totalOrderCount',
@@ -120,7 +120,7 @@ class admincontroller extends Controller
     //order
     public function orders()
     {
-        $orders = order::orderby('created_at', 'DESC')->where('subtotal' ,'>', 0)->paginate(10);
+        $orders = order::orderby('created_at', 'DESC')->where('total' ,'>', 0)->paginate(10);
         return view('admin.order', compact('orders'));
     }
 
@@ -150,23 +150,5 @@ class admincontroller extends Controller
     {
         $user = User::findorfail(session('id'));
         return view('admin.settings', compact('user'));
-    }
-
-    public function handleimage()
-    {
-        return view('admin.handleimage');
-    }
-
-    public function handlestore(Request $request)
-    {
-        $request->validate([
-            'image' => 'required|mimes:png,jpg,jpeg|max:2048'
-        ]);
-
-        $image = $request->file('image');
-        $imagename = time() . '.' . $image->getClientOriginalExtension();
-        $path = $image->storeAs('images', $imagename, ['disk' => 's3', 'visibility' => 'public']);
-
-        return redirect()->route('admin.handleimage')->with('uploadedImage', $path);
     }
 }

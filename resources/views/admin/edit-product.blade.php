@@ -111,7 +111,7 @@
                         </div>
                         <div class="upload-image flex-grow">
                             <div class="item" id="imgpreview">
-                                <img src="{{asset('storage/products/'.$product->image)}}" class="effect8" alt="">
+                                <img src="{{ Storage::disk('s3')->url('products/'.$product->image) }}" class="effect8" alt="">
                             </div>
                             <div id="upload-file" class="item up-load">
                                 <label class="uploadfile" for="myFile">
@@ -132,7 +132,7 @@
                             @if (!empty($images))
                             @foreach ($images as $image)
                             <div class="item text-center">
-                                <img src="{{ asset('storage/products/' . $image) }}" alt="Product Image" class="img-fluid mb-2">
+                                <img src="{{ Storage::disk('s3')->url('products/'.$image) }}" alt="Product Image" class="img-fluid mb-2">
                                 <div>
                                     <label>
                                         <input type="checkbox" name="remove_images[]" value="{{ $image }}"> Remove

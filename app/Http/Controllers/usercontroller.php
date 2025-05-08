@@ -20,7 +20,7 @@ class usercontroller extends Controller
 
     public function accountorders()
     {
-        $orders = order::orderby('created_at', 'DESC')->where('user_id', session('id'))->get();
+        $orders = order::orderby('created_at', 'DESC')->where('user_id', session('id'))->where('total', '>', 0)->get();
         return view('users.account-order', compact('orders'));
     }
 

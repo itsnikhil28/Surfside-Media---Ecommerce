@@ -136,7 +136,6 @@
                     </ul>
                 </div>
             </form>
-
         </div>
         @livewire('adminheaderdetails')
     </div>

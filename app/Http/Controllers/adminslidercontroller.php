@@ -21,13 +21,13 @@ class adminslidercontroller extends Controller
             'subtitle' => 'required',
             'link' => 'required|url',
             'status' => 'required',
-            'image' => 'required|mimes:png,jpg,jpeg|max:2048',
+            'image' => 'required|mimes:png,jpg,jpeg,webp|max:2048',
         ]);
 
         if ($request->file('image')) {
             $image = $request->file('image');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('slider', $imagename, 'public');
+            $image->storeAs('slider', $imagename, ['disk' => 's3', 'visibility' => 'public']);
         }
 
         slider::create([
@@ -58,6 +58,7 @@ class adminslidercontroller extends Controller
             'subtitle' => 'required',
             'link' => 'required|url',
             'status' => 'required',
+            'image' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048'
         ]);
 
         $slider->tagline = $request->tagline;
@@ -68,12 +69,12 @@ class adminslidercontroller extends Controller
 
         if ($request->hasFile('image')) {
             if ($slider->image) {
-                Storage::disk('public')->delete('slider/' . $slider->image);
+                Storage::disk('s3')->delete('slider/' . $slider->image);
             }
 
             $image = $request->file('image');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('slider', $imagename, 'public');
+            $image->storeAs('slider', $imagename, ['disk' => 's3', 'visibility' => 'public']);
 
             $slider->image = $imagename;
         }
@@ -87,8 +88,8 @@ class adminslidercontroller extends Controller
     {
         $slider = slider::findorfail($id);
 
-        if ($slider->image && Storage::disk('public')->exists('slider/' . $slider->image)) {
-            Storage::disk('public')->delete('slider/' . $slider->image);
+        if ($slider->image && Storage::disk('s3')->exists('slider/' . $slider->image)) {
+            Storage::disk('s3')->delete('slider/' . $slider->image);
         }
         $slider->delete();
 

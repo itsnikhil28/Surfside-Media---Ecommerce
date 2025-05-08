@@ -98,7 +98,7 @@
                             </div>
                             <div class="upload-image flex-grow">
                                 <div class="item" id="imgpreview" style="display:block">
-                                    <img src="{{asset('storage/products/'.$sale->product->image)}}" class="effect8" alt="" id="product_image">
+                                    <img src="{{ Storage::disk('s3')->url('products/'.$sale->product->image)}}" class="effect8" alt="" id="product_image">
                                 </div>
                             </div>
                         </fieldset>

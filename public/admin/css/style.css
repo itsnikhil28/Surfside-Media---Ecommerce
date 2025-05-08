@@ -6235,7 +6235,7 @@ select.h40 {
   .layout-wrap .section-content-right .header-dashboard .wrap .header-grid > .message,
   .layout-wrap .section-content-right .header-dashboard .wrap .header-grid > .noti,
   .layout-wrap .section-content-right .header-dashboard .wrap .header-grid > .country {
-    display: none;
+    display: flex;
   }
   .tf-section-6 > div:nth-child(1) {
     grid-column: span 8/span 8 !important;

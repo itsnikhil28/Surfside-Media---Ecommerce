@@ -78,6 +78,21 @@ export default function Chatbot() {
 
     return (
         <>
+            <style>
+                {`
+                    .chat-button-custom {
+                        bottom: 4rem;
+                        right: 3rem !important;
+                    }
+
+                    @media (min-width: 768px) {
+                        .chat-button-custom {
+                            bottom: 3rem;
+                            right: 2rem !important;
+                        }
+                    }
+                `}
+            </style>
             {/* Chat Icon */}
             <AnimatePresence>
                 {showChatIcon && (
@@ -86,8 +101,8 @@ export default function Chatbot() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 100 }}
                         transition={{ duration: 0.2 }}
-                        className="position-fixed"
-                        style={{ bottom: '3rem', right: '2rem', zIndex: 50 }}
+                        className="position-fixed chat-button-custom"
+                        style={{zIndex: 50 }}
                         onClick={tooglechat}
                     >
                         <Button ref={chaticonref} title="Chat" onClick={tooglechat} size="icon" className="rounded-circle shadow-lg p-2"

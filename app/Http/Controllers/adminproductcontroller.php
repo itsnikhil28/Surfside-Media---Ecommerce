@@ -32,14 +32,14 @@ class adminproductcontroller extends Controller
             'stock_status' => 'required',
             'featured' => 'required',
             'quantity' => 'required',
-            'image' => 'required|mimes:png,jpg,jpeg|max:2048',
-            'images.*' => 'required|mimes:jpg,jpeg,png|max:2048'
+            'image' => 'required|mimes:png,jpg,jpeg,webp|max:2048',
+            'images.*' => 'mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
         if ($request->file('image')) {
             $image = $request->file('image');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('products', $imagename, 'public');
+            $image->storeAs('products', $imagename, ['disk' => 's3', 'visibility' => 'public']);
         }
 
         $imageNames = [];
@@ -47,7 +47,7 @@ class adminproductcontroller extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $id => $image) {
                 $imageName = $id . '.' . time() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('products', $imageName, 'public');
+                $image->storeAs('products', $imageName, ['disk' => 's3', 'visibility' => 'public']);
                 $imageNames[] = $imageName;
             }
         }
@@ -98,7 +98,8 @@ class adminproductcontroller extends Controller
             'stock_status' => 'required',
             'featured' => 'required',
             'quantity' => 'required',
-            'image' => 'nullable|mimes:png,jpg,jpeg|max:2048'
+            'image' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048',
+            'images.*' => 'mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
         $product->name = $request->name;
@@ -117,12 +118,12 @@ class adminproductcontroller extends Controller
 
         if ($request->hasFile('image')) {
             if ($product->image) {
-                Storage::disk('public')->delete('products/' . $product->image);
+                Storage::disk('s3')->delete('products/' . $product->image);
             }
 
             $image = $request->file('image');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('products', $imagename, 'public');
+            $image->storeAs('products', $imagename, ['disk' => 's3', 'visibility' => 'public']);
 
             $product->image = $imagename;
         }
@@ -133,7 +134,7 @@ class adminproductcontroller extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $id => $image) {
                 $imageName = $id . '.' . time() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('products', $imageName, 'public');
+                $image->storeAs('products', $imageName, ['disk' => 's3', 'visibility' => 'public']);
                 $newImageNames[] = $imageName;
             }
         }
@@ -141,7 +142,7 @@ class adminproductcontroller extends Controller
         if ($request->has('remove_images')) {
             foreach ($request->remove_images as $removeImage) {
                 if (in_array($removeImage, $existingImages)) {
-                    Storage::disk('public')->delete('products/' . $removeImage);
+                    Storage::disk('s3')->delete('products/' . $removeImage);
                     $existingImages = array_diff($existingImages, [$removeImage]);
                 }
             }
@@ -161,13 +162,14 @@ class adminproductcontroller extends Controller
         if ($product->images) {
             $images = explode(',', $product->images);
             foreach ($images as $image) {
-                Storage::disk('public')->delete('products/' . $image);
+                Storage::disk('s3')->delete('products/' . $image);
             }
         }
 
-        if ($product->image && Storage::disk('public')->exists('products/' . $product->image)) {
-            Storage::disk('public')->delete('products/' . $product->image);
+        if ($product->image && Storage::disk('s3')->exists('products/' . $product->image)) {
+            Storage::disk('s3')->delete('products/' . $product->image);
         }
+
         $product->delete();
 
         return redirect()->route('admin.products')->with('success', 'Product Deleted successfully.');

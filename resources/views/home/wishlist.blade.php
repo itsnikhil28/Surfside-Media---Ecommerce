@@ -47,7 +47,8 @@
                         <tr>
                             <td>
                                 <div class="shopping-cart__product-item">
-                                    <img loading="lazy" src="{{asset('storage/products/'.$wishlist->product->image)}}"
+                                    <img loading="lazy"
+                                        src="{{ Storage::disk('s3')->url('products/'.$wishlist->product->image) }}"
                                         width="120" height="120" alt="" />
                                 </div>
                             </td>
@@ -188,7 +189,8 @@
                                     <div class="form-check">
                                         <input class="form-check-input form-check-input_fill" type="checkbox" value=""
                                             id="local_pickup">
-                                        <label class="form-check-label" for="local_pickup">Local pickup: &#8377;8</label>
+                                        <label class="form-check-label" for="local_pickup">Local pickup:
+                                            &#8377;8</label>
                                     </div>
                                     <div>Shipping to AL.</div>
                                     <div>

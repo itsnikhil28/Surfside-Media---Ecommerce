@@ -18,13 +18,13 @@ class admincategorycontroller extends Controller
     {
         $request->validate([
             'name' => 'required|unique:brands,name',
-            'image' => 'required|mimes:png,jpg,jpeg|max:2048'
+            'image' => 'required|mimes:png,jpg,jpeg,webp|max:2048'
         ]);
 
         if ($request->file('image')) {
             $image = $request->file('image');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $path = $image->storeAs('categories', $imagename, 'public');
+            $image->storeAs('categories', $imagename, ['disk' => 's3', 'visibility' => 'public']);
         } else {
             return back()->with('error', 'Image upload failed. Please try again.');
         }
@@ -37,7 +37,7 @@ class admincategorycontroller extends Controller
             'image' => $imagename,
         ]);
 
-        return redirect()->back()->with('success', 'Category created successfully.');
+        return redirect()->route('admin.categories')->with('success', 'Category created successfully.');
     }
 
     public function editcategory($id)
@@ -53,7 +53,7 @@ class admincategorycontroller extends Controller
         $request->validate([
             'name' => 'required|unique:brands,name,' . $category->id,
             'slug' => 'required|unique:brands,slug,' . $category->id,
-            'image' => 'nullable|mimes:png,jpg,jpeg|max:2048'
+            'image' => 'nullable|mimes:png,jpg,jpeg,webp|max:2048'
         ]);
 
         $category->name = $request->name;
@@ -61,16 +61,18 @@ class admincategorycontroller extends Controller
 
         if ($request->hasFile('image')) {
             if ($category->image) {
-                Storage::disk('public')->delete('categories/' . $category->image);
+                Storage::disk('s3')->delete('categories/' . $category->image);
             }
 
             $image = $request->file('image');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('categories', $imagename, 'public');
+            $image->storeAs('categories', $imagename, ['disk' => 's3', 'visibility' => 'public']);
 
             $category->image = $imagename;
         }
+
         $category->save();
+
         return redirect()->route('admin.categories')->with('success', 'Category Updated successfully.');
     }
 
@@ -78,9 +80,10 @@ class admincategorycontroller extends Controller
     {
         $category = category::findorfail($id);
 
-        if ($category->image && Storage::disk('public')->exists('categories/' . $category->image)) {
-            Storage::disk('public')->delete('categories/' . $category->image);
+        if ($category->image && Storage::disk('s3')->exists('categories/' . $category->image)) {
+            Storage::disk('s3')->delete('categories/' . $category->image);
         }
+
         $category->delete();
 
         return redirect()->route('admin.categories')->with('success', 'Category Deleted successfully.');

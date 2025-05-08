@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 @section('content')
 <main>
@@ -15,7 +14,7 @@
             <div class="swiper-slide">
                 <div class="overflow-hidden position-relative h-100">
                     <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                        <img loading="lazy" src="{{asset('storage/slider/'.$slider->image)}}" width="542" height="733"
+                        <img loading="lazy" src="{{Storage::disk('s3')->url('slider/'.$slider->image)}}"
                             alt="Woman Fashion 1"
                             class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
                         <div class="character_markup type2">
@@ -99,9 +98,9 @@
                                 <a href="javascript:void(0)"
                                     onclick="document.getElementById('category_form-{{$category->id}}').submit()">
                                     <input type="hidden" name="categoryid" value="{{$category->id}}">
-                                    <img loading="lazy" class="w-100 h-auto mb-3"
-                                        src="{{asset('storage/categories/'.$category->image)}}" width="124" height="124"
-                                        alt="" />
+                                    <img loading="lazy" class="mb-3"
+                                        src="{{Storage::disk('s3')->url('categories/'.$category->image)}}" width="124"
+                                        height="124" alt="" />
                                     <div class="text-center">
                                         <a href="javascript:void(0)" class="menu-link fw-medium">{{$category->name}}</a>
                                     </div>
@@ -204,7 +203,7 @@
                                     <div class="pc__img-wrapper">
                                         <a href="{{route('product.detail',$sale->product->slug)}}">
                                             <img loading="lazy" alt="" width="258" height="313"
-                                                src="{{asset('storage/products/'.$sale->product->image)}}"
+                                                src="{{Storage::disk('s3')->url('products/'.$sale->product->image)}}"
                                                 class="pc__img">
                                             {{-- <img loading="lazy"
                                                 src="{{asset('storage/product/'.$sale->product->images)}}" width="258"
@@ -302,7 +301,8 @@
                 @if ($category->first_product)
                 <div class="col-md-6 p-5">
                     <div class="category-banner__item border-radius-10 mb-5">
-                        <img loading="lazy" src="{{ asset('storage/products/' . $category->first_product->image) }}"
+                        <img loading="lazy"
+                            src="{{ Storage::disk('s3')->url('products/' . $category->first_product->image) }}"
                             width="690" height="665" alt="{{ $category->first_product->name }}" />
                         <div class="category-banner__item-mark">
                             Starting at &#8377;{{ $category->first_product->sale_price }}
@@ -338,8 +338,8 @@
                     <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
                         <div class="pc__img-wrapper">
                             <a href="{{route('product.detail',$product->slug)}}">
-                                <img loading="lazy" src="{{asset('storage/products/'.$product->image)}}" width="330"
-                                    height="400" alt="Cropped Faux leather Jacket" class="pc__img">
+                                <img loading="lazy" src="{{ Storage::disk('s3')->url('products/' . $product->image) }}"
+                                    width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
                             </a>
                         </div>
 

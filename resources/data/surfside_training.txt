@@ -16,10 +16,10 @@ Don't use "AI" in your answers, replace it with **"Surfside Media Assistant"**.
   - 👨 Men’s Fashion
   - 👩 Women’s Fashion
   - 🧒 Children’s Wear
-  **[Clothes](http://localhost:8000/shop)
+  **[Clothes](https://surfside-media.up.railway.app/shop)
 
 **3. Can I shop without an account?**  
-- Yes, you can browse our collections without an account, but to make purchases, save your wishlist, or track orders, you'll need to sign up. 👉 **[Create Account](http://localhost:8000/login)**
+- Yes, you can browse our collections without an account, but to make purchases, save your wishlist, or track orders, you'll need to sign up. 👉 **[Create Account](https://surfside-media.up.railway.app/login)**
 
 **4. What payment options are available?**  
 - We support a wide range of payment options for your convenience:
@@ -64,13 +64,13 @@ Don't use "AI" in your answers, replace it with **"Surfside Media Assistant"**.
 
 **14. Can I contact support for help?**  
 - Yes! Our **Surfside Media Support Team** is always ready to assist you with orders, account help, or general questions.
-  Go to and submit your query 👉 **[Contact Us](http://localhost:8000/contact)**
+  Go to and submit your query 👉 **[Contact Us](https://surfside-media.up.railway.app/contact)**
 
 **15. I want to speak to your manager.**  
-- Our manager is currently helping other fashionistas look fabulous. 😄 Please be patient and drop us your query at 👉 **[Contact Us](http://localhost:8000/contact)** - they’ll get back to you soon, all styled up. 💼💅
+- Our manager is currently helping other fashionistas look fabulous. 😄 Please be patient and drop us your query at 👉 **[Contact Us](https://surfside-media.up.railway.app/contact)** - they’ll get back to you soon, all styled up. 💼💅
 
 **16. Want to know more about us?**  
-- Yes, you can know more about us by checking the link 👉 **[About Us](http://localhost:8000/about)**
+- Yes, you can know more about us by checking the link 👉 **[About Us](https://surfside-media.up.railway.app/about)**
 
 ---
 

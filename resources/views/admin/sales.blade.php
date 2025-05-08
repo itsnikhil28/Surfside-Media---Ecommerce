@@ -74,8 +74,8 @@
                                     <td>{{$i}}</td>
                                     <td class="pname">
                                         <div class="image">
-                                            <img src="{{asset('storage/products/'.$sale->product->image)}}" alt=""
-                                                class="image">
+                                            <img src="{{ Storage::disk('s3')->url('products/'.$sale->product->image) }}"
+                                                alt="" class="image">
                                         </div>
                                         <div class="name">
                                             <a href="javascript:void(0)"

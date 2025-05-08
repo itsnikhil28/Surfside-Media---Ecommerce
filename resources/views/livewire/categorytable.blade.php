@@ -19,7 +19,7 @@
                     <td>{{$i}}</td>
                     <td class="pname">
                         <div class="image">
-                            <img src="{{asset('storage/categories/'.$category->image)}}" alt="" class="image">
+                            <img src="{{ Storage::disk('s3')->url('categories/'.$category->image) }}" alt="" class="image">
                         </div>
                         <div class="name">
                             <a href="#" class="body-title-2">{{$category->name}}</a>

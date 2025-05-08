@@ -389,17 +389,17 @@
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide">
                                         <a href="{{route('product.detail',$product->slug)}}">
-                                            <img loading="lazy" src="{{asset('storage/products/'.$product->image)}}"
-                                                width="330" height="400" alt="{{$product->name}}"
-                                                class="pc__img">
+                                            <img loading="lazy"
+                                                src="{{ Storage::disk('s3')->url('products/'.$product->image) }}"
+                                                width="330" height="400" alt="{{$product->name}}" class="pc__img">
                                         </a>
                                     </div>
                                     @if ($product->images)
                                     @foreach (explode(',',$product->images) as $image)
                                     <div class="swiper-slide">
                                         <a href="{{route('product.detail',$product->slug)}}">
-                                            <img loading="lazy" src="{{asset('storage/products/'.$image)}}" width="330"
-                                                height="400" alt="{{$product->name}}" class="pc__img">
+                                            <img loading="lazy" src="{{ Storage::disk('s3')->url('products/'.$image) }}"
+                                                width="330" height="400" alt="{{$product->name}}" class="pc__img">
                                         </a>
                                     </div>
                                     @endforeach
@@ -432,7 +432,9 @@
 
                         <div class="pc__info position-relative">
                             <p class="pc__category">{{$product->category->name}}</p>
-                            <h6 class="pc__title"><a href="details.html">{{$product->name}} </a></h6>
+                            <h6 class="pc__title">
+                                <a href="{{route('product.detail',$product->slug)}}">{{$product->name}} </a>
+                            </h6>
                             <div class="product-card__price d-flex">
                                 <span class="money price">
                                     @if ($sales_product_id->contains($product->id))

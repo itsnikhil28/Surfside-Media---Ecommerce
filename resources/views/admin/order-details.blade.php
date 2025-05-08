@@ -60,8 +60,7 @@
                             <tr>
                                 <td class="pname">
                                     <div class="image">
-                                        <img src="{{asset('storage/products/'.$item->product->image)}}" alt=""
-                                            class="image">
+                                        <img src="{{ Storage::disk('s3')->url('products/'.$item->product->image)}}" alt="{{$item->product->name}}" class="image">
                                     </div>
                                     <div class="name">
                                         <a href="{{route('product.detail',$item->product->slug)}}" target="_blank"
