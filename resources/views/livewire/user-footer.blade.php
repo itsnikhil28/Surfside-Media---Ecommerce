@@ -8,11 +8,14 @@
                             <img src="{{asset('assets/images/logo.png')}}" alt="SurfsideMedia"
                                 class="logo__image d-block" />
                         </a>
-                        
+
                     </div>
                     <p class="footer-address">123 Avenue, City, 246761</p>
-                    <p class="m-0"><strong class="fw-medium">srajput11052005@gmail.com</strong></p>
-                    <p><strong class="fw-medium">+91 766-860-7543</strong></p>
+                    <p class="m-0"><strong class="fw-medium">itsnikhil28@gmail.com</strong></p>
+                    <p><strong class="fw-medium">+91 945-664-2100</strong></p>
+                    
+                    {{-- <p class="m-0"><strong class="fw-medium">srajput11052005@gmail.com</strong></p>
+                    <p><strong class="fw-medium">+91 766-860-7543</strong></p> --}}
 
                     <ul class="social-links list-unstyled d-flex flex-wrap mb-0">
                         <li>
@@ -195,19 +198,22 @@
                 @else
                 <a href="{{ route('users.dashboard') }}" class="header-tools__item">
                     @endif
-                    <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
                         <use href="#icon_user" />
                     </svg>
                 </a> --}}
 
-            <div class="col-3">
-                <a href="{{ session('role')== 'admin' ? route('admin.dashboard') : route('users.dashboard') }}" class="footer-mobile__link d-flex flex-column align-items-center">
-                    <svg class="d-block" width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_user" />
-                    </svg>
-                    <span>Account</span>
-                </a>
-            </div>
+                <div class="col-3">
+                    <a href="{{ session('role')== 'admin' ? route('admin.dashboard') : route('users.dashboard') }}"
+                        class="footer-mobile__link d-flex flex-column align-items-center">
+                        <svg class="d-block" width="18" height="18" viewBox="0 0 20 20" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_user" />
+                        </svg>
+                        <span>Account</span>
+                    </a>
+                </div>
         </div>
     </footer>
 </div>
